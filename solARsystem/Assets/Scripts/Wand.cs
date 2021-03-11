@@ -4,19 +4,22 @@ using UnityEngine;
 
 public class Wand : MonoBehaviour
 {
+    MeshRenderer wandMesh;
+    Material og;
+
     public Material collided;
     public Material selected;
-    public GameObject target;
-    Transform pos;
 
-    MeshRenderer msh;
-    Material og;
+    GameObject target;
+    MeshRenderer targetMesh;
+    Transform targetPos;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        msh = this.GetComponent<MeshRenderer>();
-        og = msh.material;
+        wandMesh = this.GetComponent<MeshRenderer>();
+        og = wandMesh.material;
     }
 
     // Update is called once per frame
@@ -25,32 +28,34 @@ public class Wand : MonoBehaviour
         
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        msh.material = collided;
-        target = collision.gameObject;
+        wandMesh.material = collided;
     }
 
-    private void OnCollisionStay(Collision collision)
+    private void OnTriggerStay(Collider other)
     {
-        msh.material = collided;
-        target = collision.gameObject;
+        wandMesh.material = collided;
     }
 
-    private void OnCollisionExit(Collision collision)
+    private void OnTriggerExit(Collider other)
     {
-        msh.material = og;
+        wandMesh.material = og;
+        target = other.gameObject;
     }
 
     public void Selected()
     {
-        msh.material = selected;
-        pos = target.transform;
-
+        wandMesh.material = selected;
+        targetPos = target.transform;
+        targetMesh = target.GetComponent<MeshRenderer>();
+        targetMesh.material.EnableKeyword("_EMISSION");
     }
 
     public void Positioned()
     {
         target.transform.position = this.transform.position;
+        targetMesh = target.GetComponent<MeshRenderer>();
+        targetMesh.material.DisableKeyword("_EMISSION");
     }
 }
