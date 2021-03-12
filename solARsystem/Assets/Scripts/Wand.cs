@@ -9,17 +9,20 @@ public class Wand : MonoBehaviour
 
     public Material collided;
     public Material selected;
+    bool select;
 
-    GameObject target;
     GameObject currentTarget;
-    MeshRenderer targetMesh;
-    Transform targetPos;
+    Transform p;
+    Transform spawnPos;
 
     // Start is called before the first frame update
     void Start()
     {
         wandMesh = this.GetComponent<MeshRenderer>();
         og = wandMesh.material;
+        p = this.transform.parent;
+        spawnPos = p.GetChild(0);
+        select = false;
     }
 
     // Update is called once per frame
@@ -46,21 +49,18 @@ public class Wand : MonoBehaviour
 
     public void Selected()
     {
-        if(wandMesh.material != selected)
-        {
-            wandMesh.material = selected;
-            target = currentTarget;
-            targetPos = target.transform;
-        }
-        else
-        {
-            wandMesh.material = og;
-        }
+        select = true;
+        GameObject spawned;
+        spawned = Instantiate(currentTarget, spawnPos, true) as GameObject;
+        spawned.SetActive(true);     
     }
 
     public void Positioned()
     {
-        target.transform.position = this.transform.position;
+        if (select)
+        {
+            print("hi");
+        }
         wandMesh.material = og;
     }
 }

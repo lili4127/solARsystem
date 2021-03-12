@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Planet : MonoBehaviour
+public class Orbit : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -13,6 +13,6 @@ public class Planet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        this.transform.Rotate(0, 50 * Time.deltaTime, 0);
+        this.transform.Rotate(0, 25 * Time.deltaTime, 0);
     }
 }
