@@ -11,9 +11,9 @@ public class Wand : MonoBehaviour
     public Material selected;
 
     GameObject target;
+    GameObject currentTarget;
     MeshRenderer targetMesh;
     Transform targetPos;
-
 
     // Start is called before the first frame update
     void Start()
@@ -36,26 +36,31 @@ public class Wand : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         wandMesh.material = collided;
+        currentTarget = other.gameObject;
     }
 
     private void OnTriggerExit(Collider other)
     {
         wandMesh.material = og;
-        target = other.gameObject;
     }
 
     public void Selected()
     {
-        wandMesh.material = selected;
-        targetPos = target.transform;
-        targetMesh = target.GetComponent<MeshRenderer>();
-        targetMesh.material.EnableKeyword("_EMISSION");
+        if(wandMesh.material != selected)
+        {
+            wandMesh.material = selected;
+            target = currentTarget;
+            targetPos = target.transform;
+        }
+        else
+        {
+            wandMesh.material = og;
+        }
     }
 
     public void Positioned()
     {
         target.transform.position = this.transform.position;
-        targetMesh = target.GetComponent<MeshRenderer>();
-        targetMesh.material.DisableKeyword("_EMISSION");
+        wandMesh.material = og;
     }
 }
