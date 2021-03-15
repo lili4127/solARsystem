@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Wand : MonoBehaviour
 {
@@ -8,11 +9,26 @@ public class Wand : MonoBehaviour
     Material og;
 
     public Material collided;
-    public Material selected;
-    bool select;
+
+    public Button sel;
+    bool se;
+
+    public Button pos;
+    public bool p;
+
+    public Button rot;
+    public bool r;
+
+    public Button sca;
+    public bool sc;
+
+    public Button del;
+    bool d;
+    public Material deletion;
 
     GameObject currentTarget;
-    Transform p;
+    public GameObject selected;
+    Transform par;
     Transform spawnPos;
 
     // Start is called before the first frame update
@@ -20,26 +36,45 @@ public class Wand : MonoBehaviour
     {
         wandMesh = this.GetComponent<MeshRenderer>();
         og = wandMesh.material;
-        p = this.transform.parent;
-        spawnPos = p.GetChild(0);
-        select = false;
+        par = this.transform.parent;
+        spawnPos = par.GetChild(0);
+
+        se = false;
+        p = false;
+        r = false;
+        sc = false;
+        d = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (d)
+        {
+            wandMesh.material = deletion;
+        }        
     }
 
     private void OnTriggerEnter(Collider other)
     {
         wandMesh.material = collided;
+        currentTarget = other.gameObject;
     }
 
     private void OnTriggerStay(Collider other)
     {
         wandMesh.material = collided;
         currentTarget = other.gameObject;
+
+        if (d && other.gameObject.name.Contains("Clone"))
+        {
+            Destroy(other.gameObject);
+        }
+
+        if (p && other.gameObject.name.Contains("Clone"))
+        {
+            currentTarget.transform.parent = spawnPos.transform;
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -49,18 +84,80 @@ public class Wand : MonoBehaviour
 
     public void Selected()
     {
-        select = true;
-        GameObject spawned;
-        spawned = Instantiate(currentTarget, spawnPos, true) as GameObject;
-        spawned.SetActive(true);     
+        if (!se)
+        {
+            se = true;
+            sel.GetComponent<Image>().color = Color.green;
+            selected = Instantiate(currentTarget, spawnPos, true) as GameObject;
+        }
+
+        else if (se)
+        {
+            se = false;
+            sel.GetComponent<Image>().color = Color.white;
+        }
     }
 
     public void Positioned()
     {
-        if (select)
+        if (!p)
         {
-            print("hi");
+            se = false;
+            sel.GetComponent<Image>().color = Color.white;
+            p = true;
+            pos.GetComponent<Image>().color = Color.green; 
         }
-        wandMesh.material = og;
+
+        else if (p)
+        {
+            p = false;
+            pos.GetComponent<Image>().color = Color.white;
+        }
+    }
+
+    public void Rotated()
+    {
+        if (!r)
+        {
+            r = true;
+            rot.GetComponent<Image>().color = Color.green;
+        }
+
+        else if (r)
+        {
+            r = false;
+            rot.GetComponent<Image>().color = Color.white;
+        }
+    }
+
+    public void Scaled()
+    {
+        if (!sc)
+        {
+            sc = true;
+            sca.GetComponent<Image>().color = Color.green;
+        }
+
+        else if (sc)
+        {
+            sc = false;
+            sca.GetComponent<Image>().color = Color.white;
+        }
+    }
+
+    public void Deleted()
+    {
+        if (!d)
+        {
+            d = true;
+            del.GetComponent<Image>().color = Color.green;
+            wandMesh.material = deletion;
+        }
+
+        else if (d)
+        {
+            d = false;
+            del.GetComponent<Image>().color = Color.white;
+        }
     }
 }

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 830140086042158794}
   m_Layer: 0
   m_Name: Moon1
-  m_TagString: Untagged
+  m_TagString: moon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
