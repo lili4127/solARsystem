@@ -75,6 +75,11 @@ public class Wand : MonoBehaviour
         {
             currentTarget.transform.parent = spawnPos.transform;
         }
+
+        if (r && other.gameObject.name.Contains("Clone"))
+        {
+            currentTarget.transform.rotation = spawnPos.transform.rotation;
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -88,7 +93,17 @@ public class Wand : MonoBehaviour
         {
             se = true;
             sel.GetComponent<Image>().color = Color.green;
-            selected = Instantiate(currentTarget, spawnPos, true) as GameObject;
+
+            if(currentTarget.tag == "orbit")
+            {
+                selected = Instantiate(currentTarget.transform.parent.gameObject, spawnPos, true) as GameObject;
+            }
+
+            else
+            {
+                selected = Instantiate(currentTarget, spawnPos, true) as GameObject;
+            }
+            
         }
 
         else if (se)
