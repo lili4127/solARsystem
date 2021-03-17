@@ -20,14 +20,12 @@ public class Orbit : MonoBehaviour
         if (other.gameObject.tag == "sun")
         {
             this.transform.parent = other.gameObject.transform;
-            this.transform.position = other.gameObject.transform.position + new Vector3(0f, 0.2f, 0f);
+            this.transform.position = other.gameObject.transform.position;
         }
 
-        if (other.gameObject.name.Contains("Clone"))
+        if (other.gameObject.name.Contains("Clone") && !other.gameObject.name.Contains("orbit"))
         {
             other.gameObject.transform.parent = this.transform;
         }
     }
-
-
 }

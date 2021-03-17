@@ -21,6 +21,11 @@ public class Wand : MonoBehaviour
 
     public Button sca;
     public bool sc;
+    //scaling variables
+    float scaleRate = 0.5f;
+    float minScale = 0.01f;
+    float maxScale = 0.05f;
+    float speed = 5f;
 
     public Button del;
     bool d;
@@ -79,6 +84,11 @@ public class Wand : MonoBehaviour
         if (r && other.gameObject.name.Contains("Clone"))
         {
             currentTarget.transform.rotation = spawnPos.transform.rotation;
+        }
+
+        if (sc && other.gameObject.name.Contains("Clone"))
+        {
+            Scale(other.gameObject);
         }
     }
 
@@ -158,6 +168,26 @@ public class Wand : MonoBehaviour
             sc = false;
             sca.GetComponent<Image>().color = Color.white;
         }
+    }
+
+    void ApplyScaleRate(GameObject g)
+    {
+        g.transform.localScale += Vector3.one * scaleRate * Time.deltaTime * speed;
+    }
+
+    //scale the ring larger or smaller based on its current size
+    void Scale(GameObject g)
+    {
+        //if we exceed the defined range then correct the sign of scaleRate.
+        if (g.transform.localScale.x < minScale)
+        {
+            scaleRate = Mathf.Abs(scaleRate);
+        }
+        else if (transform.localScale.x > maxScale)
+        {
+            scaleRate = -Mathf.Abs(scaleRate);
+        }
+        ApplyScaleRate(g);
     }
 
     public void Deleted()
