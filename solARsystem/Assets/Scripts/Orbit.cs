@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Orbit : MonoBehaviour
 {
+    public Wand w;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -17,13 +19,19 @@ public class Orbit : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "sun")
+        if (other.gameObject.tag == "sun" && w.selected.gameObject.tag == "orbitclone")
         {
             this.transform.parent = other.gameObject.transform;
             this.transform.position = other.gameObject.transform.position;
         }
 
-        if (other.gameObject.name.Contains("Clone") && !other.gameObject.name.Contains("orbit"))
+        if (other.gameObject.tag == "planetclone" && w.selected.gameObject.tag == "orbitclone")
+        {
+            this.transform.parent = other.gameObject.transform;
+            this.transform.position = other.gameObject.transform.position;
+        }
+
+        if (other.gameObject.tag == "planetclone" && w.selected.gameObject.tag == "planetclone")
         {
             other.gameObject.transform.parent = this.transform;
         }

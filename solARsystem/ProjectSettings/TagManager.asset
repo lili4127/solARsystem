@@ -8,6 +8,9 @@ TagManager:
   - planet
   - orbit
   - moon
+  - planetclone
+  - moonclone
+  - orbitclone
   layers:
   - Default
   - TransparentFX

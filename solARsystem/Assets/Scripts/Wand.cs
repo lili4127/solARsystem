@@ -22,14 +22,17 @@ public class Wand : MonoBehaviour
     public Button sca;
     public bool sc;
     //scaling variables
-    float scaleRate = 0.5f;
-    float minScale = 0.01f;
-    float maxScale = 0.05f;
-    float speed = 5f;
+    float scaleRate = 0.3f;
+    float minScale = 1f;
+    float maxScale = 4f;
+    float speed = 2f;
 
     public Button del;
     bool d;
     public Material deletion;
+
+    public Button toggleOrbit;
+    bool orbitVisible;
 
     GameObject currentTarget;
     public GameObject selected;
@@ -49,6 +52,8 @@ public class Wand : MonoBehaviour
         r = false;
         sc = false;
         d = false;
+        orbitVisible = true;
+        toggleOrbit.GetComponent<Image>().color = Color.green;
     }
 
     // Update is called once per frame
@@ -57,7 +62,15 @@ public class Wand : MonoBehaviour
         if (d)
         {
             wandMesh.material = deletion;
-        }        
+        }
+
+        if (!orbitVisible)
+        {
+            foreach (GameObject o in GameObject.FindGameObjectsWithTag("orbitclone"))
+            {
+                o.GetComponent<Renderer>().enabled = false;
+            }
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -106,14 +119,22 @@ public class Wand : MonoBehaviour
 
             if(currentTarget.tag == "orbit")
             {
-                selected = Instantiate(currentTarget.transform.parent.gameObject, spawnPos, true) as GameObject;
+                selected = Instantiate(currentTarget, spawnPos, true) as GameObject;
+                selected.tag = "orbitclone";
             }
 
-            else
+            else if (currentTarget.tag == "planet" || currentTarget.tag == "planetclone")
             {
                 selected = Instantiate(currentTarget, spawnPos, true) as GameObject;
+                selected.tag = "planetclone";
             }
-            
+
+            else if (currentTarget.tag == "moon" || currentTarget.tag == "moonclone")
+            {
+                selected = Instantiate(currentTarget, spawnPos, true) as GameObject;
+                selected.tag = "moonclone";
+            }
+
         }
 
         else if (se)
@@ -183,7 +204,7 @@ public class Wand : MonoBehaviour
         {
             scaleRate = Mathf.Abs(scaleRate);
         }
-        else if (transform.localScale.x > maxScale)
+        else if (g.transform.localScale.x > maxScale)
         {
             scaleRate = -Mathf.Abs(scaleRate);
         }
@@ -203,6 +224,26 @@ public class Wand : MonoBehaviour
         {
             d = false;
             del.GetComponent<Image>().color = Color.white;
+        }
+    }
+
+    public void ToggleOrbit()
+    {
+        if (!orbitVisible)
+        {
+            orbitVisible = true;
+            toggleOrbit.GetComponent<Image>().color = Color.green;
+
+            foreach (GameObject o in GameObject.FindGameObjectsWithTag("orbitclone"))
+            {
+                o.GetComponent<Renderer>().enabled = true;
+            }    
+        }
+
+        else if (orbitVisible)
+        {
+            orbitVisible = false;
+            toggleOrbit.GetComponent<Image>().color = Color.white;
         }
     }
 }
