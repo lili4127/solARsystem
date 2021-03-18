@@ -34,6 +34,15 @@ public class Wand : MonoBehaviour
     public Button toggleOrbit;
     bool orbitVisible;
 
+    public Button orbitSpeed;
+    public bool sp;
+    //orbit speed variables
+    float speedRate = 2f;
+    float minSpeed = 20f;
+    float maxSpeed = 80f;
+    public float orbitSpeedValue = 30f;
+
+    //Wand's current collision target and gameobject
     GameObject currentTarget;
     public GameObject selected;
     Transform par;
@@ -42,11 +51,13 @@ public class Wand : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //set wand color and spawn position at tip
         wandMesh = this.GetComponent<MeshRenderer>();
         og = wandMesh.material;
         par = this.transform.parent;
         spawnPos = par.GetChild(0);
 
+        //initialize button values
         se = false;
         p = false;
         r = false;
@@ -54,16 +65,19 @@ public class Wand : MonoBehaviour
         d = false;
         orbitVisible = true;
         toggleOrbit.GetComponent<Image>().color = Color.green;
+        sp = false;
     }
 
     // Update is called once per frame
     void Update()
     {
+        //make wand red if delete button is active
         if (d)
         {
             wandMesh.material = deletion;
         }
 
+        //make orbits invisible if orbit toggle is off
         if (!orbitVisible)
         {
             foreach (GameObject o in GameObject.FindGameObjectsWithTag("orbitclone"))
@@ -73,12 +87,14 @@ public class Wand : MonoBehaviour
         }
     }
 
+    //change wand color if colliding with something
     private void OnTriggerEnter(Collider other)
     {
         wandMesh.material = collided;
         currentTarget = other.gameObject;
     }
 
+    //grab game object wand is continuing to collide with and perform functions based on active toggles
     private void OnTriggerStay(Collider other)
     {
         wandMesh.material = collided;
@@ -103,8 +119,14 @@ public class Wand : MonoBehaviour
         {
             Scale(other.gameObject);
         }
+
+        if (sp && other.gameObject.tag == "orbitclone")
+        {
+            SpeedUp();
+        }
     }
 
+    //return wand to original color once not colliding
     private void OnTriggerExit(Collider other)
     {
         wandMesh.material = og;
@@ -112,6 +134,7 @@ public class Wand : MonoBehaviour
 
     public void Selected()
     {
+        //instantiate and tag clones of orbits, planets, and moons if selected
         if (!se)
         {
             se = true;
@@ -137,6 +160,7 @@ public class Wand : MonoBehaviour
 
         }
 
+        //exit select mode
         else if (se)
         {
             se = false;
@@ -146,6 +170,7 @@ public class Wand : MonoBehaviour
 
     public void Positioned()
     {
+        //enter position mode
         if (!p)
         {
             se = false;
@@ -154,6 +179,7 @@ public class Wand : MonoBehaviour
             pos.GetComponent<Image>().color = Color.green; 
         }
 
+        //exit position mode
         else if (p)
         {
             p = false;
@@ -163,12 +189,14 @@ public class Wand : MonoBehaviour
 
     public void Rotated()
     {
+        //enter rotation mode
         if (!r)
         {
             r = true;
             rot.GetComponent<Image>().color = Color.green;
         }
 
+        //exit rotation mode
         else if (r)
         {
             r = false;
@@ -178,12 +206,14 @@ public class Wand : MonoBehaviour
 
     public void Scaled()
     {
+        //enter scale mode
         if (!sc)
         {
             sc = true;
             sca.GetComponent<Image>().color = Color.green;
         }
 
+        //exit scale mode
         else if (sc)
         {
             sc = false;
@@ -191,12 +221,13 @@ public class Wand : MonoBehaviour
         }
     }
 
+    //change scale of gameobject
     void ApplyScaleRate(GameObject g)
     {
         g.transform.localScale += Vector3.one * scaleRate * Time.deltaTime * speed;
     }
 
-    //scale the ring larger or smaller based on its current size
+    //scale the orbit larger or smaller based on its current size
     void Scale(GameObject g)
     {
         //if we exceed the defined range then correct the sign of scaleRate.
@@ -213,6 +244,7 @@ public class Wand : MonoBehaviour
 
     public void Deleted()
     {
+        //enter delete mode and change wand color
         if (!d)
         {
             d = true;
@@ -220,6 +252,7 @@ public class Wand : MonoBehaviour
             wandMesh.material = deletion;
         }
 
+        //exit delete mode
         else if (d)
         {
             d = false;
@@ -229,6 +262,7 @@ public class Wand : MonoBehaviour
 
     public void ToggleOrbit()
     {
+        //enter active orbits mode (orbits can be seen)
         if (!orbitVisible)
         {
             orbitVisible = true;
@@ -240,10 +274,51 @@ public class Wand : MonoBehaviour
             }    
         }
 
+        //exit active orbits mode
         else if (orbitVisible)
         {
             orbitVisible = false;
             toggleOrbit.GetComponent<Image>().color = Color.white;
         }
     }
+
+    public void Speed()
+    {
+        //enter speed mode
+        if (!sp)
+        {
+            sp = true;
+            orbitSpeed.GetComponent<Image>().color = Color.green;
+        }
+
+        //exit speed mode
+        else if (sp)
+        {
+            sp = false;
+            orbitSpeed.GetComponent<Image>().color = Color.white;
+        }
+    }
+
+    //change speed
+    void ApplySpeedRate()
+    {
+        orbitSpeedValue += 2 * speedRate * Time.deltaTime;
+    }
+
+    //increase or decrease orbit speed based on its current speed
+    void SpeedUp()
+    {
+        //if we exceed the defined speed then correct the sign of speed.
+        if (orbitSpeedValue < minSpeed)
+        {
+            speedRate = Mathf.Abs(speedRate);
+        }
+        else if (orbitSpeedValue > maxSpeed)
+        {
+            speedRate = -Mathf.Abs(speedRate);
+        }
+        ApplySpeedRate();
+    }
+
+
 }

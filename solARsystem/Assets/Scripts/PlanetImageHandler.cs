@@ -13,6 +13,7 @@ public class PlanetImageHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //set first planet object active
         p1.SetActive(true);
         p2.SetActive(false);
         p3.SetActive(false);
@@ -26,6 +27,7 @@ public class PlanetImageHandler : MonoBehaviour
 
     }
 
+    //toggle which planet is rendered on image target
     public void NextPlanet()
     {
         if(activePlanet == 0)

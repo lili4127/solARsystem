@@ -13,6 +13,7 @@ public class MoonImageHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //set first moon object active
         m1.SetActive(true);
         m2.SetActive(false);
         m3.SetActive(false);
@@ -26,6 +27,7 @@ public class MoonImageHandler : MonoBehaviour
         
     }
 
+    //toggle which moon appears on image target
     public void NextMoon()
     {
         if (activeMoon == 0)

@@ -14,11 +14,10 @@ public class Planet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        this.transform.Rotate(0, 50 * Time.deltaTime, 0);
-
-        if (this.transform.parent.gameObject.tag == "orbitclone")
+        //Spin planet on it's axis. Can be seen when selecting planets from image target
+        if (this.transform.parent.gameObject.tag != "orbitclone")
         {
-            this.transform.Rotate(Vector3.zero);
+            this.transform.Rotate(0, 50 * Time.deltaTime, 0);
         }
     }
 }
