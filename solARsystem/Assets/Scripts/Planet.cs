@@ -15,5 +15,10 @@ public class Planet : MonoBehaviour
     void Update()
     {
         this.transform.Rotate(0, 50 * Time.deltaTime, 0);
+
+        if (this.transform.parent.gameObject.tag == "orbitclone")
+        {
+            this.transform.Rotate(Vector3.zero);
+        }
     }
 }

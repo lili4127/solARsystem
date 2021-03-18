@@ -64,7 +64,7 @@ public class Wand : MonoBehaviour
             wandMesh.material = deletion;
         }
 
-        if (!orbitVisible && GameObject.FindGameObjectsWithTag("orbitclone").Length != 0)
+        if (!orbitVisible)
         {
             foreach (GameObject o in GameObject.FindGameObjectsWithTag("orbitclone"))
             {
