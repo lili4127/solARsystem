@@ -5,17 +5,19 @@ using UnityEngine;
 public class Orbit : MonoBehaviour
 {
     public Wand w;
+    public float s;
 
     // Start is called before the first frame update
     void Start()
     {
+        s = 20f;
     }
 
     // Update is called once per frame
     void Update()
     {
         //rotate orbit
-        this.transform.Rotate(0, 0, w.orbitSpeedValue * Time.deltaTime);
+        this.transform.Rotate(0, 0, s * Time.deltaTime);
     }
 
     private void OnTriggerEnter(Collider other)

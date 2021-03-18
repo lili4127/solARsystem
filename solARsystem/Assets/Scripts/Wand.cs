@@ -36,11 +36,6 @@ public class Wand : MonoBehaviour
 
     public Button orbitSpeed;
     public bool sp;
-    //orbit speed variables
-    float speedRate = 2f;
-    float minSpeed = 20f;
-    float maxSpeed = 80f;
-    public float orbitSpeedValue = 30f;
 
     //Wand's current collision target and gameobject
     GameObject currentTarget;
@@ -119,17 +114,18 @@ public class Wand : MonoBehaviour
         {
             Scale(other.gameObject);
         }
-
-        if (sp && other.gameObject.tag == "orbitclone")
-        {
-            SpeedUp();
-        }
     }
 
-    //return wand to original color once not colliding
+    //return wand to original color once not colliding and adjust speed if user desires
     private void OnTriggerExit(Collider other)
     {
         wandMesh.material = og;
+
+        if (sp && other.gameObject.tag == "orbitclone")
+        {
+            Orbit o = other.gameObject.GetComponent<Orbit>();
+            SpeedUp(o);
+        }
     }
 
     public void Selected()
@@ -299,26 +295,22 @@ public class Wand : MonoBehaviour
         }
     }
 
-    //change speed
-    void ApplySpeedRate()
-    {
-        orbitSpeedValue += 2 * speedRate * Time.deltaTime;
-    }
-
     //increase or decrease orbit speed based on its current speed
-    void SpeedUp()
+    void SpeedUp(Orbit o)
     {
-        //if we exceed the defined speed then correct the sign of speed.
-        if (orbitSpeedValue < minSpeed)
+        if (o.s == 20f)
         {
-            speedRate = Mathf.Abs(speedRate);
+            o.s = 50f;
         }
-        else if (orbitSpeedValue > maxSpeed)
+
+        else if (o.s == 50f)
         {
-            speedRate = -Mathf.Abs(speedRate);
+            o.s = 80f;
         }
-        ApplySpeedRate();
+
+        else if (o.s == 80f)
+        {
+            o.s = 20f;
+        }
     }
-
-
 }
