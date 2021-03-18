@@ -13,6 +13,6 @@ public class Sun : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        this.transform.Rotate(0, 50 * Time.deltaTime, 0);
     }
 }

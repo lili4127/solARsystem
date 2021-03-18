@@ -24,7 +24,7 @@ public class Wand : MonoBehaviour
     //scaling variables
     float scaleRate = 0.3f;
     float minScale = 1f;
-    float maxScale = 4f;
+    float maxScale = 2f;
     float speed = 2f;
 
     public Button del;
@@ -64,7 +64,7 @@ public class Wand : MonoBehaviour
             wandMesh.material = deletion;
         }
 
-        if (!orbitVisible)
+        if (!orbitVisible && GameObject.FindGameObjectsWithTag("orbitclone").Length != 0)
         {
             foreach (GameObject o in GameObject.FindGameObjectsWithTag("orbitclone"))
             {

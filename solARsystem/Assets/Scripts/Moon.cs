@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Moon : MonoBehaviour
 {
+
     // Start is called before the first frame update
     void Start()
     {
@@ -13,6 +14,5 @@ public class Moon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        this.transform.Rotate(0, 20 * Time.deltaTime, 0);
     }
 }

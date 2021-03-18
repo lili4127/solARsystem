@@ -15,6 +15,14 @@ public class Orbit : MonoBehaviour
     void Update()
     {
         this.transform.Rotate(0, 0, 25 * Time.deltaTime);
+
+        Vector3 r = this.transform.rotation.eulerAngles;
+
+        if (this.transform.parent.gameObject.tag == "sun")
+        {
+            Vector3 rP = this.transform.parent.rotation.eulerAngles;
+            this.transform.rotation = Quaternion.Euler(r.x, rP.y, r.z);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -32,6 +40,11 @@ public class Orbit : MonoBehaviour
         }
 
         if (other.gameObject.tag == "planetclone" && w.selected.gameObject.tag == "planetclone")
+        {
+            other.gameObject.transform.parent = this.transform;
+        }
+
+        if (other.gameObject.tag == "moonclone" && w.selected.gameObject.tag == "moonclone")
         {
             other.gameObject.transform.parent = this.transform;
         }
