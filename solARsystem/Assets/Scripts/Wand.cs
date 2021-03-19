@@ -24,7 +24,7 @@ public class Wand : MonoBehaviour
     //scaling variables
     float scaleRate = 0.3f;
     float minScale = 1f;
-    float maxScale = 2f;
+    float maxScale = 3f;
     float speed = 2f;
 
     public Button del;
